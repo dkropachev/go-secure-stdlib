@@ -164,7 +164,14 @@ func (c *CredentialsConfig) GenerateCredentialChain(opt ...Option) (*credentials
 		// this session is only created to create the WebIdentityRoleProvider, as the env variables are already there
 		// this automatically assumes the role, but the provider needs to be added to the chain
 		c.log(hclog.Debug, "adding web identity provider", "roleARN", roleARN)
-		sess, err := session.NewSession()
+		var awscfg aws.Config
+		//if c.Region != "" {
+		//	awscfg.Region = &c.Region
+		//}
+		if c.STSEndpoint != "" {
+			awscfg.Endpoint = &c.STSEndpoint
+		}
+		sess, err := session.NewSession(&awscfg)
 		if err != nil {
 			return nil, errors.Wrap(err, "error creating a new session to create a WebIdentityRoleProvider")
 		}
