@@ -165,9 +165,9 @@ func (c *CredentialsConfig) GenerateCredentialChain(opt ...Option) (*credentials
 		// this automatically assumes the role, but the provider needs to be added to the chain
 		c.log(hclog.Debug, "adding web identity provider", "roleARN", roleARN)
 		var awscfg aws.Config
-		//if c.Region != "" {
-		//	awscfg.Region = &c.Region
-		//}
+		if c.Region != "" {
+			awscfg.Region = &c.Region
+		}
 		if c.STSEndpoint != "" {
 			awscfg.Endpoint = &c.STSEndpoint
 		}
